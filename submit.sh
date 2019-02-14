@@ -8,13 +8,14 @@
 #$ -l h_rt=24:00:00
 # Request access to the rse queue. You have access to this because you are a collaborator of Marta Milo who has paid
 #$ -P rse
-#Request 7*71 unique jobs
+#Request 7*71=497 unique jobs and give them indices 0 to 496
 $ -t 0-496
 echo "Task id is $SGE_TASK_ID"
 
 export PATH=/data/md1lzc/miniconda3/bin:$PATH
 source activate r-reticulate
 
+# Construct the i,j for this SGE_TASK_ID
 (( i = SGE_TASK_ID/71 + 1 ))
 (( j = 1+(SGE_TASK_ID - (i-1)*71) ))
 echo "$i $j"
