@@ -1,22 +1,22 @@
 #!/bin/bash
 #This is a batch submission script for SharC
-#Request 16 cores from the scheduler
-#$ -pe smp 16
-# Request 3Gig of RAM per core so 48G in total
+#Request 4 cores from the scheduler
+#$ -pe smp 4
+# Request 3Gig of RAM per core so 12G in total
 #$ -l rmem=3G
-# Tell the scheduler to allow up to 4 days of wall clock time
-#$ -l h_rt=96:00:00
+# Tell the scheduler to allow up to 1 day of wall clock time
+#$ -l h_rt=24:00:00
 # Request access to the rse queue. You have access to this because you are a collaborator of Marta Milo who has paid
 #$ -P rse
+#Request 7*71 unique jobs
+$ -t 0-496
+echo "Task id is $SGE_TASK_ID"
 
 export PATH=/data/md1lzc/miniconda3/bin:$PATH
 source activate r-reticulate
-for i in 1 2 3 4 5 6 7
-do
-        for j in  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
 
-        do
-                    Rscript ~/monika_install/Benchmarking_Clustering_Methods_scRNAseq_Luisa/benchmark/benchmark_dum_parallel.R $i $j --save
+(( i = SGE_TASK_ID/71 + 1 ))
+(( j = 1+(SGE_TASK_ID - (i-1)*71) ))
+echo "$i $j"
+Rscript ~/monika_install/Benchmarking_Clustering_Methods_scRNAseq_Luisa/benchmark/benchmark_dum_parallel.R $i $j --save
 
-        done
-done
